@@ -1,0 +1,26 @@
+name: Validate Merge Commit Message
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-merge-message:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Get latest commit message
+      run: echo "${{ github.event.head_commit.message }}" > commit_message.txt
+
+    - name: Validate commit message
+      run: |
+        COMMIT_MESSAGE=$(cat commit_message.txt)
+        echo "Commit message: $COMMIT_MESSAGE"
+        if [[ ! "$COMMIT_MESSAGE" =~ ^(fix|feat): ]]; then
+          echo "❌ Error: Commit message does not follow conventional commits!"
+          exit 1
+        fi
