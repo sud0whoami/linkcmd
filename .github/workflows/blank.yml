@@ -1,33 +1,26 @@
-name: Validate Commit Messages
+name: Validate Merge Commit Message
 
 on:
-  pull_request:
-    types: [opened, edited, synchronize, reopened]
+  push:
+    branches:
+      - main
 
 jobs:
-  validate-commits:
+  validate-merge-message:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Fetch commit messages
-      run: |
-        echo "Fetching commit messages in the pull request..."
-        COMMIT_MESSAGES=$(gh pr view ${{ github.event.pull_request.number }} --json commits --jq '.commits[].commit.message')
-        echo "Commit messages found:"
-        echo "$COMMIT_MESSAGES"
-        echo "$COMMIT_MESSAGES" > commit_messages.txt
+    - name: Get latest commit message
+      run: echo "${{ github.event.head_commit.message }}" > commit_message.txt
 
-    - name: Validate commit messages
+    - name: Validate commit message
       run: |
-        echo "Validating commit messages..."
-        while read -r COMMIT_MESSAGE; do
-          echo "Checking: $COMMIT_MESSAGE"
-          if [[ ! "$COMMIT_MESSAGE" =~ ^(fix|feat): ]]; then
-            echo "❌ Error: Commit message does not follow conventional commits!"
-            exit 1
-          fi
-        done < commit_messages.txt
-      shell: bash
+        COMMIT_MESSAGE=$(cat commit_message.txt)
+        echo "Commit message: $COMMIT_MESSAGE"
+        if [[ ! "$COMMIT_MESSAGE" =~ ^(fix|feat): ]]; then
+          echo "❌ Error: Commit message does not follow conventional commits!"
+          exit 1
+        fi
