@@ -1,9 +1,8 @@
 name: Validate Merge Commit Message
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [synchronize, opened, reopened, labeled, unlabeled]
 
 jobs:
   validate-merge-message:
