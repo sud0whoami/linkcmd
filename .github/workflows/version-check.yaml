@@ -8,16 +8,16 @@ jobs:
   print_title_of_pr:
     runs-on: ubuntu-20.04
     steps:
-      - name: Print name of PR
-        id: print-pr-title
-        run: echo "SELECTED_PR_TITLE=${{ github.event.pull_request.title }}" >> "$GITHUB_OUTPUT"
+      - name: Get the name of the PR
+        id: pr-title
+        run: echo "PR_TITLE=${{ github.event.pull_request.title }}" >> "$GITHUB_OUTPUT"
       - name: Verify name of PR
         env:
-          SELECTED_PR_TITLE: ${{ steps.print-pr-title.outputs.SELECTED_PR_TITLE }}
+          PR_TITLE: ${{ steps.pr-title.outputs.PR_TITLE }}
         run: |
-          if [[ "${SELECTED_PR_TITLE}" == "test" ]]; then
+          if [[ "${PR_TITLE}" == feat:* ]]; then
             echo "The PR title is correct"
           else
-            echo "The PR title is incorrect. The name of the PR is $SELECTED_PR_TITLE"
+            echo "The PR title is incorrect. The name of the PR is $PR_TITLE"
             exit 1
           fi
