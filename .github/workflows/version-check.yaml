@@ -1,38 +1,39 @@
-name: PR Title Check
+# name: PR Title Check
 
-on:
-  pull_request:
-   types: [opened, synchronize, edited]
+# on:
+#   pull_request:
+#    types: [opened, synchronize, edited]
 
-jobs:
-  validate_pr_title:
-    runs-on: ubuntu-20.04
-    env:
-      CONV_COMMITS: "feat: fix: refactor: perf: build: ci: chore: style: docs: test:"
-    steps:
-      - name: Fetch the name of the PR
-        id: pr-title
-        run: echo "PR_TITLE=${{ github.event.pull_request.title }}" >> "$GITHUB_OUTPUT"
-      - name: Verify name of PR
-        env:
-          PR_TITLE: ${{ steps.pr-title.outputs.PR_TITLE }}
-          CONV_COMMITS: ${{ env.CONV_COMMITS }}
-        run: |
-          VALID_COMMITS=($CONV_COMMITS)
+# jobs:
+#   validate_pr_title:
+#     runs-on: ubuntu-latest
+#     # runs-on: ${{ vars.RUNNER }}
+#     env:
+#       CONV_COMMITS: "feat: fix: refactor: perf: build: ci: chore: style: docs: test:"
+#     steps:
+#       - name: Fetch the name of the PR
+#         id: pr-title
+#         run: echo "PR_TITLE=${{ github.event.pull_request.title }}" >> "$GITHUB_OUTPUT"
+#       - name: Verify name of PR
+#         env:
+#           PR_TITLE: ${{ steps.pr-title.outputs.PR_TITLE }}
+#           CONV_COMMITS: ${{ env.CONV_COMMITS }}
+#         run: |
+#           VALID_COMMITS=($CONV_COMMITS)
 
-          # Initialize a flag to indicate if the title is valid
-          VALID_TITLE=false
+#           # Initialize a flag to indicate if the title is valid
+#           VALID_TITLE=false
 
-          for PREFIX in "${VALID_COMMITS[@]}"; do
-            if [[ "${PR_TITLE}" == "${PREFIX}"* ]]; then
-              VALID_TITLE=true
-              break
-            fi
-          done
+#           for PREFIX in "${VALID_COMMITS[@]}"; do
+#             if [[ "${PR_TITLE}" == "${PREFIX}"* ]]; then
+#               VALID_TITLE=true
+#               break
+#             fi
+#           done
 
-          if [[ "${VALID_TITLE}" == "true" ]]; then
-            echo "Verified that the PR title ${PR_TITLE} adheres to the standard"
-          else
-            echo "The PR title ${PR_TITLE} is invalid. It must follow our standard. Please update the PR title to trigger the workflow again."
-            exit 1
-          fi
+#           if [[ "${VALID_TITLE}" == "true" ]]; then
+#             echo "Verified that the PR title ${PR_TITLE} adheres to the standard"
+#           else
+#             echo "The PR title ${PR_TITLE} is invalid. It must follow our standard. Please update the PR title to trigger the workflow again."
+#             exit 1
+#           fi

@@ -1,0 +1,12 @@
+name: Trigger PR Title Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited]
+
+jobs:
+  trigger-pr-title-validation:
+    uses: ./.github/workflows/validate-pr-title.yml
+    with:
+      # No need to pass PR title; the reusable workflow will handle it
+      CONV_COMMITS: "feat: fix: refactor: perf: build: ci: chore: style: docs: test:" # Optional override

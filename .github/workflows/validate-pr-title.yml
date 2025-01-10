@@ -1,0 +1,42 @@
+name: PR Title Validator
+
+on:
+  workflow_call:
+    inputs:
+      CONV_COMMITS:
+        type: string
+        description: "Space-separated list of valid prefixes"
+        required: false
+        default: "feat: fix: refactor: perf: build: ci: chore: style: docs: test:"
+
+jobs:
+  validate-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch PR Title
+        id: fetch-pr-title
+        run: echo "PR_TITLE=${{ github.event.pull_request.title }}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate PR Title
+        env:
+          PR_TITLE: ${{ steps.fetch-pr-title.outputs.PR_TITLE }}
+          CONV_COMMITS: ${{ inputs.CONV_COMMITS }}
+        run: |
+          VALID_COMMITS=($CONV_COMMITS)
+
+          # Initialize a flag to indicate if the title is valid
+          VALID_TITLE=false
+
+          for PREFIX in "${VALID_COMMITS[@]}"; do
+            if [[ "${PR_TITLE}" == "${PREFIX}"* ]]; then
+              VALID_TITLE=true
+              break
+            fi
+          done
+
+          if [[ "${VALID_TITLE}" == "true" ]]; then
+            echo "Verified that the PR title '${PR_TITLE}' adheres to the standard"
+          else
+            echo "The PR title '${PR_TITLE}' is invalid. It must follow our standard. Please update the PR title to trigger the workflow again."
+            exit 1
+          fi
