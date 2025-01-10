@@ -18,6 +18,6 @@ jobs:
           if [[ §SELECTED_PR_TITLE = "test" ]]; then
             echo "The PR title is correct"
           else
-            echo "The PR title is incorrect"
+            echo "The PR title is incorrect. The name of the PR is $SELECTED_PR_TITLE"
             exit 1
           fi
