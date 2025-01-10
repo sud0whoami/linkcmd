@@ -8,7 +8,7 @@ jobs:
   validate_pr_title:
     runs-on: ubuntu-20.04
     env:
-      VALID_COMMITS: '("feat:" "fix:" "docs:" "chore:" "test:")' # Array format
+      VALID_COMMITS: "feat: fix: docs: chore: test:" # Space-separated list of valid prefixes
     steps:
       - name: Get the name of the PR
         id: pr-title
@@ -18,8 +18,8 @@ jobs:
           PR_TITLE: ${{ steps.pr-title.outputs.PR_TITLE }}
           VALID_COMMITS: ${{ env.VALID_COMMITS }}
         run: |
-          # Use VALID_COMMITS as a Bash array
-          VALID_ARRAY=${VALID_COMMITS[@]}
+          # Convert VALID_COMMITS (space-separated) into an array
+          VALID_ARRAY=($VALID_COMMITS)
 
           # Initialize a flag to indicate if the title is valid
           IS_VALID=false
