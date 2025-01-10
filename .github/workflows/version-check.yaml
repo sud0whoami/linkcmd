@@ -15,7 +15,7 @@ jobs:
         env:
           SELECTED_PR_TITLE: ${{ steps.print-pr-title.outputs.SELECTED_PR_TITLE }}
         run: |
-          if [[ §SELECTED_PR_TITLE = test ]]; then
+          if [[ "${SELECTED_PR_TITLE}" = "test" ]]; then
             echo "The PR title is correct"
           else
             echo "The PR title is incorrect. The name of the PR is $SELECTED_PR_TITLE"
