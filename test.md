@@ -5,3 +5,6 @@ Smileyface
 :(
 ...
 ....
+:)
+:D
+:DDD
