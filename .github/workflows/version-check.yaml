@@ -10,15 +10,8 @@ jobs:
     steps:
     - name: Print Title of PR
       id: print_title
-      run: echo "::set-output name=title::${{ github.event.pull_request.title }}"
+      run: echo "title=${{ github.event.pull_request.title }}" >> $GITHUB_OUTPUT
 
-    - name: Check PR Title
-      run: |
-        TITLE=${{ steps.print_title.outputs.title }}
-        echo "The Title of your PR is $TITLE"
-        if [[ "$TITLE" == "abc123" ]]; then
-          echo "PR Title is valid"
-        else
-          echo "PR Title is invalid, your PR title is currently $TITLE"
-          exit 1
-        ```
+    - name: Output Title of PR
+      run:
+        echo "The title of the PR is $title"
