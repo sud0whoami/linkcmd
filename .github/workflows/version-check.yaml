@@ -33,6 +33,6 @@ jobs:
           if [[ "${VALID_TITLE}" == "true" ]]; then
             echo "Verified that the PR title ${PR_TITLE} adheres to the standard"
           else
-            echo "The PR title ${PR_TITLE} is invalid. It must start with one of: ${VALID_COMMITS[*]}. Please update the PR title to trigger the workflow again."
+            echo "The PR title ${PR_TITLE} is invalid. It must follow our standard. Please update the PR title to trigger the workflow again."
             exit 1
           fi
