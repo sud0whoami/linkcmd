@@ -8,15 +8,17 @@ jobs:
   print_title_of_pr:
     runs-on: ubuntu-20.04
     steps:
-    - name : Print Title of PR
-      env:
-          TITLE: ${{ github.event.pull_request.title }}
-      run: echo The Title of your PR is $TITLE
+    - name: Print Title of PR
+      id: print_title
+      run: echo "::set-output name=title::${{ github.event.pull_request.title }}"
+
     - name: Check PR Title
       run: |
-        if [[ $TITLE = "abc123" ]]; then
+        TITLE=${{ steps.print_title.outputs.title }}
+        echo "The Title of your PR is $TITLE"
+        if [[ "$TITLE" == "abc123" ]]; then
           echo "PR Title is valid"
         else
           echo "PR Title is invalid, your PR title is currently $TITLE"
           exit 1
-        fi
+        ```
