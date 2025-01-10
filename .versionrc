@@ -24,7 +24,7 @@ types:
 - type: docs
   increment: None
   section: Documentation
-  hidden: true
+  hidden: false
 - type: style
   increment: None
   section: Other
