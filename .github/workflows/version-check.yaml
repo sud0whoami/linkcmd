@@ -17,6 +17,6 @@ jobs:
         if [[ $TITLE = "abc123" ]]; then
           echo "PR Title is valid"
         else
-          echo "PR Title is invalid!"
+          echo "PR Title is invalid"
           exit 1
         fi
