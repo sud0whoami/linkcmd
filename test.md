@@ -2,6 +2,5 @@
 Smileyface
 :D
 :D
-:D
-:D
-:D
+:(
+-.-
