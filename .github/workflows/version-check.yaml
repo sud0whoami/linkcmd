@@ -12,4 +12,11 @@ jobs:
       env:
           TITLE: ${{ github.event.pull_request.title }}
       run: echo The Title of your PR is $TITLE
-
+    - name: Check PR Title
+      run: |
+        if [[ $TITLE = "abc123" ]]; then
+          echo "PR Title is valid"
+        else
+          echo "PR Title is invalid!"
+          exit 1
+        fi
