@@ -5,8 +5,10 @@ on:
    types: [opened, synchronize, edited]
 
 jobs:
-  print_title_of_pr:
+  validate_pr_title:
     runs-on: ubuntu-20.04
+    env:
+      VALID_COMMITS: '("feat:" "fix:" "docs:" "chore:" "test:")' # Array format
     steps:
       - name: Get the name of the PR
         id: pr-title
@@ -14,10 +16,26 @@ jobs:
       - name: Verify name of PR
         env:
           PR_TITLE: ${{ steps.pr-title.outputs.PR_TITLE }}
+          VALID_COMMITS: ${{ env.VALID_COMMITS }}
         run: |
-          if [[ "${PR_TITLE}" == feat:* ]]; then
-            echo "The PR title is correct"
+          # Use VALID_COMMITS as a Bash array
+          VALID_ARRAY=${VALID_COMMITS[@]}
+
+          # Initialize a flag to indicate if the title is valid
+          IS_VALID=false
+
+          # Check if PR_TITLE starts with any of the valid prefixes
+          for VALID_PREFIX in "${VALID_ARRAY[@]}"; do
+            if [[ "${PR_TITLE}" == "${VALID_PREFIX}"* ]]; then
+              IS_VALID=true
+              break
+            fi
+          done
+
+          # Decide based on the validity flag
+          if [[ "${IS_VALID}" == "true" ]]; then
+            echo "The PR title is valid: ${PR_TITLE}"
           else
-            echo "The PR title is incorrect. The name of the PR is $PR_TITLE"
+            echo "The PR title is invalid. It must start with one of: ${VALID_ARRAY[*]}"
             exit 1
           fi
