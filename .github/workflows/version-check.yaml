@@ -8,35 +8,31 @@ jobs:
   validate_pr_title:
     runs-on: ubuntu-20.04
     env:
-      VALID_COMMITS: "feat: fix: docs: chore: test:" # Space-separated list of valid prefixes
+      CONV_COMMITS: "feat: fix: refactor: perf: build: ci: chore: style: docs: test:"
     steps:
-      - name: Get the name of the PR
+      - name: Fetch the name of the PR
         id: pr-title
         run: echo "PR_TITLE=${{ github.event.pull_request.title }}" >> "$GITHUB_OUTPUT"
       - name: Verify name of PR
         env:
           PR_TITLE: ${{ steps.pr-title.outputs.PR_TITLE }}
-          VALID_COMMITS: ${{ env.VALID_COMMITS }}
+          CONV_COMMITS: ${{ env.CONV_COMMITS }}
         run: |
-          # Convert VALID_COMMITS (space-separated) into an array
-          VALID_ARRAY=($VALID_COMMITS)
+          VALID_COMMITS=($CONV_COMMITS)
 
           # Initialize a flag to indicate if the title is valid
-          IS_VALID=false
+          VALID_TITLE=false
 
-          # Check if PR_TITLE starts with any of the valid prefixes
-          for VALID_PREFIX in "${VALID_ARRAY[@]}"; do
-            echo "Checking if PR title starts with: ${VALID_PREFIX}"
-            if [[ "${PR_TITLE}" == "${VALID_PREFIX}"* ]]; then
-              IS_VALID=true
+          for PREFIX in "${VALID_COMMITS[@]}"; do
+            if [[ "${PR_TITLE}" == "${PREFIX}"* ]]; then
+              VALID_TITLE=true
               break
             fi
           done
 
-          # Decide based on the validity flag
-          if [[ "${IS_VALID}" == "true" ]]; then
-            echo "The PR title is valid: ${PR_TITLE}"
+          if [[ "${VALID_TITLE}" == "true" ]]; then
+            echo "Verified that the PR title ${PR_TITLE} adheres to the standard"
           else
-            echo "The PR title is invalid. It must start with one of: ${VALID_ARRAY[*]}"
+            echo "The PR title ${PR_TITLE} is invalid. It must start with one of: ${VALID_COMMITS[*]}. Please update the PR title to trigger the workflow again."
             exit 1
           fi
