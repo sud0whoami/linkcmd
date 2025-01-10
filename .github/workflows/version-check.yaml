@@ -8,13 +8,6 @@ jobs:
   print_title_of_pr:
     runs-on: ubuntu-20.04
     steps:
-    # - name: Print Title of PR
-    #   id: print_title
-    #   run: echo "title=${{ github.event.pull_request.title }}" >> $GITHUB_OUTPUT
-
-    # - name: Output Title of PR
-    #   run:
-    #     echo "The title of the PR is $title"
       - name: Set color
         id: color-selector
         run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
@@ -22,3 +15,10 @@ jobs:
         env:
           SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
         run: echo "The selected color is $SELECTED_COLOR"
+      - name: Print name of PR
+        id: print-pr-title
+        run: echo "SELECTED_PR_TITLE=${{ github.event.pull_request.title }}" >> "$GITHUB_OUTPUT"
+      - name: Get PR title
+        env:
+          SELECTED_PR_TITLE: ${{ steps.print-pr-title.outputs.SELECTED_PR_TITLE }}
+        run: echo "The title of the PR is $SELECTED_PR_TITLE"
