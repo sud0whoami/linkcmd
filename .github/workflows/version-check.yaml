@@ -26,6 +26,7 @@ jobs:
 
           # Check if PR_TITLE starts with any of the valid prefixes
           for VALID_PREFIX in "${VALID_ARRAY[@]}"; do
+            echo "Checking if PR title starts with: ${VALID_PREFIX}"
             if [[ "${PR_TITLE}" == "${VALID_PREFIX}"* ]]; then
               IS_VALID=true
               break
