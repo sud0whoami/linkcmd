@@ -29,7 +29,7 @@ jobs:
           # Ensure PR_TITLE does not contain dangerous characters
           if [[ "${PR_TITLE}" =~ [\$\&\;] ]]; then
             echo "Invalid PR title. Dangerous characters detected."
-            echo "Illegal characters: \$, \`, \', \;, \&, \|, \>, \<, *, [, ], \\"
+            echo "Illegal characters: \$, \`, ', ;, &, |, >, <, *, [, ], \\"
             exit 1
           fi
 
