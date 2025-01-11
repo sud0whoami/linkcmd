@@ -7,7 +7,7 @@ on:
         type: string
         description: "Space-separated list of valid prefixes"
         required: false
-        default: "feat: feat!: fix: fix!: refactor: refactor!: perf: perf!: build: build!: ci: ci!: chore: chore!: style: style!: docs: docs!: test: test!:"
+        default: "feat fix refactor perf build ci chore style docs test"
 
 jobs:
   validate-pr-title:
