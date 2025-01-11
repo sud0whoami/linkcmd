@@ -52,7 +52,10 @@ jobs:
           done
 
           if [[ "${VALID_TYPE}" == "false" ]]; then
-            echo "Invalid commit type in PR_TITLE. Allowed types: ${CONV_COMMITS}. Example: 'feat: add new feature'."
+            echo "Invalid commit type in the pull request title."
+            echo "Allowed types: ${CONV_COMMITS}."
+            echo "Expected format: <type>(<optional-scope>): <description>"
+            echo "Examples: 'feat: add new feature', 'fix(parser): resolve issue', 'feat!: breaking change'"
             exit 1
           fi
 
