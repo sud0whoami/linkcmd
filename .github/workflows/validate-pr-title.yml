@@ -7,7 +7,7 @@ on:
         type: string
         description: "Space-separated list of valid prefixes"
         required: false
-        default: "feat: fix: refactor: perf: build: ci: chore: style: docs: test:"
+        default: "feat fix refactor perf build ci chore style docs test"
 
 jobs:
   validate-pr-title:
@@ -24,7 +24,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Ensure PR_TITLE adheres to Conventional Commits
+          # Ensure PR_TITLE does not contain dangerous characters
+          if [[ "${PR_TITLE}" =~ []\'\`\|\*\<\>\$\&\;\\[] ]]; then
+            echo "Invalid PR title. Dangerous characters detected."
+            echo "Illegal characters: \$, \, ', ;, &, |, >, <, *, [, ], \\"
+            exit 1
+          fi
+
+          # Ensure PR_TITLE adheres to Conventional Commits format
           if [[ ! "${PR_TITLE}" =~ ^[a-z]+(\([a-z0-9_-]+\))?!?:[[:space:]]*[^[:space:]].+$ ]]; then
             echo "Invalid PR title. Must follow the Conventional Commits standard."
             echo "Expected format: <type>(<optional-scope>): <description>"
@@ -45,7 +52,10 @@ jobs:
           done
 
           if [[ "${VALID_TYPE}" == "false" ]]; then
-            echo "Invalid commit type in PR_TITLE. Allowed types: ${CONV_COMMITS}. Example: 'feat: add new feature'."
+            echo "Invalid commit type in the pull request title."
+            echo "Allowed types: ${CONV_COMMITS}."
+            echo "Expected format: <type>(<optional-scope>): <description>"
+            echo "Examples: 'feat: add new feature', 'fix(parser): resolve issue', 'feat!: breaking change'"
             exit 1
           fi
 
