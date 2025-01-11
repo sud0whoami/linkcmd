@@ -27,7 +27,7 @@ jobs:
           echo "PR title: ${PR_TITLE}"
 
           # Ensure PR_TITLE does not contain dangerous characters
-          if [[ "${PR_TITLE}" =~ [\$\\\`\;\&\|\>\<\*\[\]] ]]; then
+          if grep -qE '[\$\\`\;\&\|\>\<\*\[\]]' <<< "${PR_TITLE}"; then
             echo "Invalid PR title. Dangerous characters detected."
             echo "Illegal characters: \$, \`, \', \;, \&, \|, \>, \<, *, [, ], \\"
             exit 1
