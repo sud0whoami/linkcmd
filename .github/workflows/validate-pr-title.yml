@@ -25,7 +25,7 @@ jobs:
           set -euo pipefail
 
           # Ensure PR_TITLE adheres to Conventional Commits and does not contain dangerous characters
-          if [[ "${PR_TITLE}" =~ [\$\`;&|><\*\[\]\\] ]] || [[ ! "${PR_TITLE}" =~ ^[a-z]+(\([a-z0-9_-]+\))?!?:[[:space:]]*[^[:space:]].+$ ]]; then
+          if [[ "${PR_TITLE}" =~ [\$\`;\&|><\*\[\]\\] ]] || [[ ! "${PR_TITLE}" =~ ^[a-z]+(\([a-z0-9_-]+\))?!?:[[:space:]]*[^[:space:]].+$ ]]; then
             echo "Invalid PR title. Must follow the Conventional Commits standard and not contain dangerous characters."
             echo "Illegal characters: \$, \`, ;, &, |, >, <, *, [, ], \\"
             echo "Expected format: <type>(<optional-scope>): <description>"
