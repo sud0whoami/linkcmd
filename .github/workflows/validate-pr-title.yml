@@ -32,7 +32,7 @@ jobs:
           fi
 
           # Ensure PR_TITLE adheres to Conventional Commits format
-          if [[ ! "${PR_TITLE}" =~ ^[a-z]+(\([a-z0-9_-]+\))?!?:[[:space:]]*[^[:space:]].+$ ]]; then
+          if [[ ! "${PR_TITLE}" =~ ^[a-z]+(\([a-z0-9_-]+\))?\!?:[[:space:]]*[^[:space:]].+$ ]]; then
             echo "Invalid PR title. Must follow the Conventional Commits standard."
             echo "Expected format: <type>(<optional-scope>): <description>"
             echo "Examples: 'feat: add new feature', 'fix(parser): resolve issue', 'feat!: breaking change'"
