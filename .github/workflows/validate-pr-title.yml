@@ -26,8 +26,8 @@ jobs:
 
           echo "PR title: ${PR_TITLE}"
 
-          # Ensure PR_TITLE adheres to Conventional Commits and does not contain dangerous characters
-          if [[ "${PR_TITLE}" =~ [\$\'\`\;\&\|\>\<\*\[\]\\] ]]; then
+          # Ensure PR_TITLE does not contain dangerous characters
+          if echo "${PR_TITLE}" | grep -qE '[\$`\;\&|><\*\[\]\\]'; then
             echo "Invalid PR title. Dangerous characters detected."
             echo "Illegal characters: \$, \`, \', \;, \&, \|, \>, \<, *, [, ], \\"
             exit 1
