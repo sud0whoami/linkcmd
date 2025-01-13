@@ -24,6 +24,6 @@ jobs:
             echo "No conventional commits found. Please include at least one conventional commit."
             exit 1
           fi
-          last_commit=$(git log --pretty=format:"%s" $commit_range | grep -E '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)(\(.+\))?!?: .+' | head -n 1)
+          last_commit=$(git log --pretty=format:"%s" $commit_range | grep -Eo '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)' | head -n 1)
           echo "Last commit: $last_commit"
         shell: bash
