@@ -1,0 +1,42 @@
+name: "validate conventional commits"
+
+on:
+  workflow_call:
+
+jobs:
+  validate-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commits
+        run: |
+          set -euo pipefail
+          # Fetch the latest updates from the base branch
+          git fetch origin "${GITHUB_BASE_REF}" --prune --unshallow
+          # Get the commit range for the current branch
+          commit_range="origin/${GITHUB_BASE_REF}.."
+          echo "Commit range: $commit_range"
+          # Check for conventional commits in the specified range
+          commits=$(git log --pretty=format:"%s" --no-merges $commit_range | grep -E '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)(\(.+\))?!?: .+' || true)
+          echo "Commits: $commits"
+          if [ -z "$commits" ]; then
+            echo "No conventional commits found. Please include at least one conventional commit."
+            exit 1
+          fi
+          # Get the last conventional commit message
+          last_commit=$(git log --pretty=format:"%s" --no-merges $commit_range | head -n 1 || true)
+          echo "Last commit: $last_commit"
+          # # Extract the type if it's a conventional commit
+          # last_commit_type=$(echo "$last_commit" | grep -Eo '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)' || true)
+          # if [ -z "$last_commit_type" ]; then
+          #   echo "No conventional commit found on the last commit, no build will be triggered."
+          #   echo "last_commit_type=empty" >> "$GITHUB_OUTPUT"
+          # else
+          #   echo "Conventional commit found on the last commit, build will be triggered."
+          #   echo "last_commit_type=$last_commit_type" >> "$GITHUB_OUTPUT"
+          # fi
+        shell: bash
