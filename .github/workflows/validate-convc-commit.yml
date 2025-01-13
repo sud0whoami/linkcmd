@@ -26,7 +26,7 @@ jobs:
             exit 1
           fi
           # Get the last commit message
-          last_commit=$(git log --pretty=format:"%s" $commit_range | head -n 1)
+          last_commit=$(git log --pretty=format:"%s" $commit_range | head -n 1 || true)
           echo "Last commit: $last_commit"
           # # Extract the type if it's a conventional commit
           # last_commit_type=$(echo "$last_commit" | grep -Eo '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)' || true)
