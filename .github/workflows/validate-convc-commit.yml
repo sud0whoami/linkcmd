@@ -19,9 +19,11 @@ jobs:
           echo "Commit range: $commit_range"
           # Check for conventional commits in the specified range
           commits=$(git log --pretty=format:"%s" $commit_range | grep -E '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)(\(.+\))?!?: .+' || true)
-          echo "Commits: $commits[0]"
+          echo "Commits: $commits"
           if [ -z "$commits" ]; then
             echo "No conventional commits found. Please include at least one conventional commit."
             exit 1
           fi
+          last_commit=$(git log --pretty=format:"%s" -1)
+          echo "Last commit: $last_commit"
         shell: bash
