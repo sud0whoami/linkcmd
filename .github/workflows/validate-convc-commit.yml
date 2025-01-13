@@ -34,7 +34,7 @@ jobs:
             echo "Conventional commit found on the last commit, evalutaing whether to trigger a build."
             # If feat or fix, trigger a build
             if [ "$last_commit_type" == "chore" ] || [ "$last_commit_type" == "style" ] || [ "$last_commit_type" == "docs" ]; then
-              echo "Conventional commit type is chore, style or docs, no build will be triggered."
+              echo "Conventional commit type is chore, style or docs. No build will be triggered."
               echo "build=false" >> "$GITHUB_OUTPUT"
             else
               echo "Conventional commit type found to trigger a build."
