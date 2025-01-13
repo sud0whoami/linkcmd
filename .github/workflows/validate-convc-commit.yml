@@ -15,8 +15,6 @@ jobs:
       - name: Validate commits
         run: |
           set -euo pipefail
-          # Fetch the latest updates from the base branch
-          git fetch origin "${GITHUB_BASE_REF}" --prune --unshallow
           # Get the commit range for the current branch
           commit_range="origin/${GITHUB_BASE_REF}.."
           echo "Commit range: $commit_range"
