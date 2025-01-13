@@ -31,7 +31,7 @@ jobs:
           last_commit_type=$(echo "$last_commit" | grep -Eo '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)') || true
           if [ -z "$last_commit_type" ]; then
             echo "No conventional commit found on the last commit, no build will be triggered."
-            echo "empty" >> "$GITHUB_OUTPUT"
+            echo "last_commit_type=empty" >> "$GITHUB_OUTPUT"
           else
             echo "Conventional commit found on the last commit, build will be triggered."
             echo "last_commit_type=$last_commit_type" >> "$GITHUB_OUTPUT"
