@@ -25,5 +25,9 @@ jobs:
             exit 1
           fi
           last_commit=$(git log --pretty=format:"%s" $commit_range | grep -Eo '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)' | head -n 1)
-          echo "Last commit: $last_commit"
+          if [ -z "$last_commit" ]; then
+            echo "No conventional commit found on the last commit, no build will be triggered."
+          else
+            echo "last_commit=$last_commit" >> "$GITHUB_OUTPUT"
+          fi
         shell: bash
