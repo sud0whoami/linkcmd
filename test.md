@@ -2,4 +2,3 @@
 Smileyface
 :)
 :D
-:)
