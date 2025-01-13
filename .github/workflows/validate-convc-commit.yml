@@ -7,9 +7,13 @@ jobs:
   validate-commits:
     runs-on: ubuntu-latest
     steps:
-    - name: validate commits
-      id: validate-commits
-      run: |
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commits
+        run: |
           # Get the commit range for the current branch
           commit_range="origin/${GITHUB_BASE_REF}.."
           echo "Commit range: $commit_range"
@@ -19,4 +23,4 @@ jobs:
             echo "No conventional commits found. Please include at least one conventional commit."
             exit 1
           fi
-      shell: bash
+        shell: bash
