@@ -12,15 +12,6 @@ jobs:
         with:
           fetch-depth: 0
 
-jobs:
-  validate-commits:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Validate commits
         run: |
           set -euo pipefail
